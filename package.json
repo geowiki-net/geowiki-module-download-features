@@ -1,0 +1,20 @@
+{
+  "name": "geowiki-module-download-features",
+  "version": "0.0.0",
+  "description": "Add a download icon to the layer actions",
+  "main": "src/downloadFeatures.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geowiki-net/geowiki-module-download-features.git"
+  },
+  "author": "Stephan Bösch-Plepelits <skunk@xover.mud.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/geowiki-net/geowiki-module-download-features/issues"
+  },
+  "homepage": "https://github.com/geowiki-net/geowiki-module-download-features#readme",
+  "dependencies": {
+    "modulekit-window": "github:plepe/modulekit-window"
+  }
+}
