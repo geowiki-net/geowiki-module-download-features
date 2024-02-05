@@ -1,4 +1,6 @@
 import exportAll from './exportAll'
+import Window from 'modulekit-window'
+import Form from 'modulekit-form'
 
 module.exports = {
   id: 'download-features',
@@ -10,24 +12,25 @@ module.exports = {
       div.appendChild(button)
 
       button.onclick = () => {
-        const conf = {
-          type: 'OSMXML'
-        }
+        getConf(leafletGeowikiLayer, (err, conf) => {
+          if (err) { global.alert(err.message) }
 
-        exportAll(leafletGeowikiLayer, conf, (err) => {
-          global.alert('done')
+          exportAll(leafletGeowikiLayer, conf, (err) => {
+            global.alert('done')
+          })
         })
       }
     })
   }
 }
 
-/*
-register_hook('init', function () {
-  formExport = new form('export', formDef())
+function getConf (leafletGeowikiLayer, callback) 
+  const win = new Window()
+
+  const formExport = new form('export', formDef(leafletGeowikiLayer))
 
   let domForm = document.createElement('form')
-  tab.content.appendChild(domForm)
+  win.content.appendChild(domForm)
   formExport.show(domForm)
 
   let submit = document.createElement('input')
@@ -39,21 +42,13 @@ register_hook('init', function () {
     tab.content.appendChild(progressIndicator)
     submit.style.display = 'none'
 
-    prepareDownload((err) => {
-      if (err) {
-        alert(err)
-      }
+    win.hide()
 
-      submit.style.display = 'block'
-      tab.content.removeChild(progressIndicator)
-      tab.unselect()
-    })
+    callback(null, conf)
   }
-  tab.content.appendChild(submit)
+  win.content.appendChild(submit)
 
-  tab.on('select', () => {
-    formExport.resize()
-  })
+  win.show()
 })
 
  (data) => {
@@ -94,7 +89,7 @@ register_hook('init', function () {
   return div
 }
 
-function formDef () {
+function formDef (leafletGeowikiLayer) {
   let values = {}
   Object.keys(types).forEach(type =>
     values[type] = lang('export:' + type)
@@ -109,4 +104,3 @@ function formDef () {
     }
   }
 }
-*/
