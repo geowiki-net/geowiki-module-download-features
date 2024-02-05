@@ -17,7 +17,7 @@ module.exports = {
           if (err) { global.alert(err.message) }
 
           exportAll(leafletGeowikiLayer, conf, (err) => {
-            global.alert('done')
+            if (err) { global.alert(err.message) }
           })
         })
       }
@@ -49,7 +49,9 @@ function getConf (leafletGeowikiLayer, callback) {
   }
   win.content.appendChild(submit)
 
-  win.show()
+  global.setTimeout(() => {
+    win.show()
+  }, 0)
 }
 
 function formDef (leafletGeowikiLayer) {
