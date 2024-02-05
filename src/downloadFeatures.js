@@ -1,6 +1,7 @@
 import exportAll from './exportAll'
 import Window from 'modulekit-window'
 import Form from 'modulekit-form'
+import modulekitLang from 'modulekit-lang'
 
 module.exports = {
   id: 'download-features',
@@ -24,10 +25,10 @@ module.exports = {
   }
 }
 
-function getConf (leafletGeowikiLayer, callback) 
-  const win = new Window()
+function getConf (leafletGeowikiLayer, callback) {
+  const win = new Window({})
 
-  const formExport = new form('export', formDef(leafletGeowikiLayer))
+  const formExport = new Form('export', formDef(leafletGeowikiLayer))
 
   let domForm = document.createElement('form')
   win.content.appendChild(domForm)
@@ -35,64 +36,27 @@ function getConf (leafletGeowikiLayer, callback)
 
   let submit = document.createElement('input')
   submit.type = 'submit'
-  submit.value = lang('export-prepare')
+  submit.value = modulekitLang.lang('export-prepare')
   submit.onclick = () => {
     let progressIndicator = document.createElement('div')
-    progressIndicator.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> ' + lang('loading')
-    tab.content.appendChild(progressIndicator)
+    progressIndicator.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> ' + modulekitLang.lang('loading')
+    win.content.appendChild(progressIndicator)
     submit.style.display = 'none'
 
-    win.hide()
+    win.close()
 
-    callback(null, conf)
+    callback(null, formExport.get_data())
   }
   win.content.appendChild(submit)
 
   win.show()
-})
-
- (data) => {
-  const div = document.createElement('div')
-
-  let formExport = new form('exportOne', formDef())
-
-  let domForm = document.createElement('form')
-  div.appendChild(domForm)
-  formExport.show(domForm)
-
-  let submit = document.createElement('input')
-  submit.type = 'submit'
-  submit.value = lang('export-prepare')
-  submit.onclick = () => {
-    let progressIndicator = document.createElement('div')
-    progressIndicator.innerHTML = '<i class="fa fa-spinner fa-pulse fa-fw"></i> ' + lang('loading')
-    div.appendChild(progressIndicator)
-    submit.style.display = 'none'
-
-    let conf = formExport.get_data()
-
-    conf.singleFeature = true
-
-    createDownload(conf, [ data ], (err) => {
-      if (err) {
-        alert(err)
-      }
-
-      submit.style.display = 'block'
-      div.removeChild(progressIndicator)
-    })
-  }
-  div.appendChild(submit)
-
-  global.setTimeout(() => formExport.resize(), 0)
-
-  return div
 }
 
 function formDef (leafletGeowikiLayer) {
+  const types = ['GeoJSON', 'OSMXML', 'OSMJSON']
   let values = {}
-  Object.keys(types).forEach(type =>
-    values[type] = lang('export:' + type)
+  types.forEach(type =>
+    values[type] = modulekitLang.lang('export:' + type)
   )
 
   return {
@@ -100,7 +64,7 @@ function formDef (leafletGeowikiLayer) {
       name: 'Type',
       type: 'radio',
       values,
-      default: Object.keys(types)[0]
+      default: types[0]
     }
   }
 }
