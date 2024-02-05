@@ -17,6 +17,7 @@
   "dependencies": {
     "async": "^3.2.5",
     "file-saver": "^2.0.5",
+    "modulekit-form": "github:plepe/modulekit-form#browserify",
     "modulekit-window": "github:plepe/modulekit-window"
   }
 }
